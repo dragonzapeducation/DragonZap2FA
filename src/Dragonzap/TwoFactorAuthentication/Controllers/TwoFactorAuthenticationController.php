@@ -8,7 +8,7 @@ class TwoFactorAuthenticationController
 {
     public function twoFactorGenerateCode()
     {
-        
+
         // Generate a new code
         $two_factor_code = TwoFactorAuthentication::generateCode();
         // Send it to the user
@@ -24,8 +24,7 @@ class TwoFactorAuthenticationController
 
     public function confirmTwoFactorCode()
     {
-        if (!request()->has('code'))
-        {
+        if (!request()->has('code')) {
             return redirect()->back()->withErrors(['code' => 'No code was provided']);
         }
 
@@ -35,15 +34,14 @@ class TwoFactorAuthenticationController
         if (!$two_factor_code || !$two_factor_code->isValid()) {
             return redirect()->back()->withErrors(['code' => 'The code is invalid or expired.']);
         }
-        
-       $okay = $two_factor_code->confirm($code);
-       if ($okay)
-       {
-           return redirect()->url(TwoFactorAuthentication::getReturnUrl());
-       }
-       else
-       {
-           return redirect()->back()->withErrors(['code' => 'The code is incorrect']);
-       }
+
+        $okay = $two_factor_code->confirm($code);
+        if ($okay) {
+            // Release the authentication requirement for this session and redirect to the return URL
+            TwoFactorAuthentication::releaseAuthRequirement();
+            return redirect()->to(TwoFactorAuthentication::getReturnUrl());
+        } else {
+            return redirect()->back()->withErrors(['code' => 'The code is incorrect']);
+        }
     }
 }
