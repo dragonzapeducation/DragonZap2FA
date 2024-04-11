@@ -2,9 +2,9 @@
 
 namespace Dragonzap\TwoFactorAuthentication;
 
-use App\Notifications\TwoFactorCodeNotification;
 use Auth;
 use Dragonzap\TwoFactorAuthentication\Exceptions\NoUserException;
+use Dragonzap\TwoFactorAuthentication\Notifications\TwoFactorCodeNotification;
 class TwoFactorCode
 {
     protected $code;
