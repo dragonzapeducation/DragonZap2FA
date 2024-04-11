@@ -1,7 +1,7 @@
 {
     "name": "dragonzap/2fa",
     "description": "Used for building two factor authentication in laravel",
-    "type": "library",
+    "type": "laravel-package",
     "license": "GPL-2.0-or-later",
     "autoload": {
         "psr-4": {
