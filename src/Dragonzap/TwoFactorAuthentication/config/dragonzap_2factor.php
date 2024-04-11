@@ -9,5 +9,5 @@
 
  
 return [
-   
+   'two_factor_view' => 'two_factor_enter_code'
 ];

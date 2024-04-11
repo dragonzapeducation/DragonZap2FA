@@ -24,7 +24,23 @@ class TwoFactorAuthenticationProvider extends ServiceProvider
             __DIR__.'/config/dragonzap_2factor.php', 'dragonzap_2factor'
         );
 
-        $this->loadMigrationsFrom(__DIR__.'./database/migrations');
+        $this->loadViewsFrom(__DIR__.'/views', 'dragonzap_2factor');
+
+        $this->publishes([
+            __DIR__.'/views' => resource_path('views/vendor/dragonzap_2factor'),
+        ], 'views');
+
+        $this->loadMigrationsFrom(__DIR__.'/database/migrations');
+        $this->publishes([
+            __DIR__.'/database/migrations' => database_path('migrations'),
+        ], 'migrations');
+
+        $this->loadRoutesFrom(__DIR__.'/routes/dragonzap_2factor.php');
+        $this->publishes([
+            __DIR__.'/routes/web.php' => base_path('routes/dragonzap_2factor.php'),
+        ], 'routes');
+
+        
 
     }
     
