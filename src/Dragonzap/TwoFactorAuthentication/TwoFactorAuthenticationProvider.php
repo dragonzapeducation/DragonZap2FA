@@ -37,7 +37,7 @@ class TwoFactorAuthenticationProvider extends ServiceProvider
 
         $this->loadRoutesFrom(__DIR__.'/routes/dragonzap_2factor.php');
         $this->publishes([
-            __DIR__.'/routes/web.php' => base_path('routes/dragonzap_2factor.php'),
+            __DIR__.'/routes/dragonzap_2factor.php' => base_path('routes/dragonzap_2factor.php'),
         ], 'routes');
 
         
