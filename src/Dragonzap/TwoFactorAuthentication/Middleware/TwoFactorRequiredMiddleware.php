@@ -14,9 +14,14 @@ class TwoFactorRequiredMiddleware
      * @param  \Closure  $next
      * @return mixed
      */
-    public function handle($request, Closure $next)
+    public function handle($request, Closure $next, $type = null)
     {
-        if (!TwoFactorAuthentication::isAuthenticationRequired()) {
+        if (!$type) {
+            $type = 'if-enabled';
+        }
+
+
+        if (!TwoFactorAuthentication::isAuthenticationRequired($type)) {
             return $next($request);
         }
 

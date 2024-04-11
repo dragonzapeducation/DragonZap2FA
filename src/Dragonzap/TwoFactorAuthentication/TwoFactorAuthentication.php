@@ -1,10 +1,12 @@
 <?php
 
 namespace Dragonzap\TwoFactorAuthentication;
+
 use Illuminate\Support\Facades\Session;
-class TwoFactorAuthentication   
+
+class TwoFactorAuthentication
 {
-    public static function generateCode() : TwoFactorCode
+    public static function generateCode(): TwoFactorCode
     {
         // Secure random
         $random_code = random_int(100000, 999999);
@@ -17,7 +19,7 @@ class TwoFactorAuthentication
     /**
      * Sets the return URL for the two factor authentication process. I.e the URL to return to after the user has authenticated
      */
-    public static function setReturnUrl(string $url) : void
+    public static function setReturnUrl(string $url): void
     {
         Session::put('two_factor_return_url', $url);
         Session::save();
@@ -25,7 +27,7 @@ class TwoFactorAuthentication
     /**
      * Gets the return URL for the two factor authentication process
      */
-    public static function getReturnUrl() : string
+    public static function getReturnUrl(): string
     {
         return Session::get('two_factor_return_url');
     }
@@ -35,7 +37,7 @@ class TwoFactorAuthentication
      * this will expire and authentication will be required again.
      * @return bool
      */
-    public static function releaseAuthRequirement() : void
+    public static function releaseAuthRequirement(): void
     {
         self::clearCode();
         Session::put('two_factor_authenticated', true);
@@ -43,19 +45,37 @@ class TwoFactorAuthentication
         Session::save();
     }
 
-    public static function isAuthenticationRequired()
+    private static function validateAuthenticationType($type)
     {
-        if (!config('dragonzap_2factor.enabled'))
-        {
+        if ($type != 'if-enabled' && $type != 'always') {
+            throw new \Exception('Invalid authentication type');
+        }
+    }
+
+    /**
+     * Checks if the user needs to authenticate with two factor authentication
+     * @param string $type This is the type of authentication required. 'if-enabled' means that the user must authenticate if two factor authentication is enabled, 'always' means that the user must always authenticate with two factor authentication regardless of the setting.
+     * @throws DragonZap\TwoFactorAuthentication\Exceptions\InvalidAuthenticationTypeException if the type is invalid or not recognized
+     */
+    public static function isAuthenticationRequired($type = 'if-enabled'): bool
+    {
+        self::validateAuthenticationType($type);
+        if (!config('dragonzap_2factor.enabled')) {
             return false;
         }
 
-        if (!Session::has('two_factor_authenticated') || !Session::get('two_factor_authenticated'))
-        {
+        if ($type == 'if-enabled') {
+            if (!auth()->user()->two_factor_enabled) {
+                return false;
+            }
+        }
+
+        if (!Session::has('two_factor_authenticated') || !Session::get('two_factor_authenticated')) {
             return true;
         }
 
 
+        // Has the last time the user authenticated expired?
         $authenticated_time = Session::get('two_factor_authenticated_time');
         return $authenticated_time->diffInMinutes(now()) >= config('dragonzap_2factor.authentication.expires_in_minutes');
     }
@@ -68,17 +88,16 @@ class TwoFactorAuthentication
     }
 
 
-    public static function getGeneratedCode() : TwoFactorCode|null
+    public static function getGeneratedCode(): TwoFactorCode|null
     {
-        if (!Session::has('two_factor_code'))
-        {
+        if (!Session::has('two_factor_code')) {
             return null;
         }
 
         return new TwoFactorCode(Session::get('two_factor_code'), Session::get('two_factor_code_time'));
     }
 
-    public static function hasExistingCode() : bool
+    public static function hasExistingCode(): bool
     {
         $generated_code = self::getGeneratedCode();
         return $generated_code !== null && $generated_code->isValid();
