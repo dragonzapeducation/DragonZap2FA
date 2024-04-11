@@ -1,11 +1,9 @@
 <?php
 
-namespace App\Notifications;
+namespace Dragonzap\TwoFactorAuthentication\Notifications;
 
 use Dragonzap\TwoFactorAuthentication\TwoFactorCode;
-use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 
 class TwoFactorCodeNotification extends Notification
