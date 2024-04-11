@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '0e0ccfd4b89d0b8398e795569cfda3ddd259b499',
+        'reference' => '88bdcd0cd1dcb6d99191109a40f62a9268e5154b',
         'name' => 'dragonzap/2fa',
         'dev' => true,
     ),
@@ -70,7 +70,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '0e0ccfd4b89d0b8398e795569cfda3ddd259b499',
+            'reference' => '88bdcd0cd1dcb6d99191109a40f62a9268e5154b',
             'dev_requirement' => false,
         ),
         'egulias/email-validator' => array(
@@ -595,8 +595,8 @@
         'psr/log-implementation' => array(
             'dev_requirement' => false,
             'provided' => array(
-                0 => '1.0|2.0|3.0',
-                1 => '3.0.0',
+                0 => '3.0.0',
+                1 => '1.0|2.0|3.0',
             ),
         ),
         'psr/simple-cache' => array(

@@ -8,7 +8,7 @@
  * Website: https://dragonzap.com
  */
 
-namespace Dragonzap\OpenAI\ChatGPT;
+namespace Dragonzap\TwoFactorAuthentication;
 
 use Illuminate\Support\ServiceProvider;
 
