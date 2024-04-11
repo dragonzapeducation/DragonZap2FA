@@ -2,10 +2,10 @@
     'root' => array(
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'type' => 'library',
+        'type' => 'laravel-package',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '88bdcd0cd1dcb6d99191109a40f62a9268e5154b',
+        'reference' => 'f5ffb97b38a06d68c609e5a41c1aac8bbe1fb19b',
         'name' => 'dragonzap/2fa',
         'dev' => true,
     ),
@@ -67,10 +67,10 @@
         'dragonzap/2fa' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'type' => 'library',
+            'type' => 'laravel-package',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '88bdcd0cd1dcb6d99191109a40f62a9268e5154b',
+            'reference' => 'f5ffb97b38a06d68c609e5a41c1aac8bbe1fb19b',
             'dev_requirement' => false,
         ),
         'egulias/email-validator' => array(
