@@ -16,10 +16,9 @@ class TwoFactorRequiredMiddleware
     public function handle($request, Closure $next)
     {
         $user = $request->user();
-        if (!$user->two_factor_enabled)
-        {
-            return redirect()->route('two-factor.enable');
-        }
+
+        return redirect()->route('dragonzap.two_factor_enter_code');
+        
         return $next($request);
     }
 

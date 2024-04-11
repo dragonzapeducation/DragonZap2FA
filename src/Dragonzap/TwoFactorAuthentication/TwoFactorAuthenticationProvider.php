@@ -10,6 +10,7 @@
 
 namespace Dragonzap\TwoFactorAuthentication;
 
+use Dragonzap\TwoFactorAuthentication\Middleware\TwoFactorRequiredMiddleware;
 use Illuminate\Support\ServiceProvider;
 
 class TwoFactorAuthenticationProvider extends ServiceProvider
@@ -39,6 +40,9 @@ class TwoFactorAuthenticationProvider extends ServiceProvider
         $this->publishes([
             __DIR__.'/routes/dragonzap_2factor.php' => base_path('routes/dragonzap_2factor.php'),
         ], 'routes');
+
+        $router = $this->app['router'];
+        $router->aliasMiddleware('twofactor-required', TwoFactorRequiredMiddleware::class);
 
         
 

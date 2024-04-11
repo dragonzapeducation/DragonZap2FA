@@ -1,3 +1,3 @@
 <?php
 
-Route::get('/dragonzap/two_factor', 'TwoFactorAuthenticationController@twoFactorEnterCode')->name('dragonzap.two_factor_enter_code');
+Route::get('/dragonzap/two_factor', 'Dragonzap\TwoFactorAuthentication\Controllers\TwoFactorAuthenticationController@twoFactorEnterCode')->name('dragonzap.two_factor_enter_code');
