@@ -28,6 +28,21 @@ class TwoFactorCode
     {
         return !$this->isExpired();
     }
+
+    public function confirm($code)
+    {
+        if (!$this->isValid())
+        {
+            return false;
+        }
+
+        if ($this->code == $code)
+        {
+            return true;
+        }
+        return false;
+    }
+
     public function send()
     {
         // Send the code to the user

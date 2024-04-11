@@ -16,10 +16,11 @@ class TwoFactorRequiredMiddleware
      */
     public function handle($request, Closure $next)
     {
-        if (config('dragonzap_2factor.enabled') == false) {
+        if (!TwoFactorAuthentication::isAuthenticationRequired()) {
             return $next($request);
         }
 
+        TwoFactorAuthentication::setReturnUrl($request->url());
 
         return redirect()->route('dragonzap.two_factor_generate_code');
 

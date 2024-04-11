@@ -10,6 +10,9 @@
  
 return [
    'enabled' => env('DRAGONZAP_2FACTOR_ENABLED', true),
+   'authentication' => [
+       'expires_in_minutes' => env('DRAGONZAP_2FACTOR_AUTHENTICATION_EXPIRES_IN_MINUTES', 15),
+   ],
    'notification' => [
     // You can change the notification subject for the TwoFactorCodeNotification class here
     'subject' => 'Confirm your two factor authentication code',
