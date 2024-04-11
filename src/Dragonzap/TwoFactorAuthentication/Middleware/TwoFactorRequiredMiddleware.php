@@ -20,11 +20,9 @@ class TwoFactorRequiredMiddleware
             return $next($request);
         }
 
-        $two_factor_code = TwoFactorAuthentication::generateCode();
-        $two_factor_code->send();
-        return redirect()->route('dragonzap.two_factor_enter_code');
-        
-      
+
+        return redirect()->route('dragonzap.two_factor_generate_code');
+
     }
 
 }

@@ -40,7 +40,7 @@ class TwoFactorCodeNotification extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-            ->subject('Confirm your two factor authentication code')
+            ->subject(config('dragonzap_2factor.notification.subject'))
             ->greeting('You must confirm your two factor authentication code')
             ->line('Your two factor authentication code is: ' . $this->twoFactorCode->getCode());
     }
