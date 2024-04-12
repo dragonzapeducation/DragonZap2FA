@@ -29,6 +29,11 @@ class TwoFactorAuthenticationController
         }
 
         $code = request()->get('code');
+        // If the code has been sent as an array of numbers (e.g. [1, 2, 3, 4]), convert it to a string
+        if (is_array($code))
+        {
+            $code = implode('', $code);
+        }
 
         $two_factor_code = TwoFactorAuthentication::getGeneratedCode();
         if (!$two_factor_code || !$two_factor_code->isValid()) {
