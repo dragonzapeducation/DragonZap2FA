@@ -81,6 +81,11 @@ class TwoFactorAuthentication
         }
 
 
+        // Has the IP address changed? If so, require authentication
+        if (request()->ip() != Session::get('two_factor_ip')) {
+            return true;
+        }
+
         // Has the last time the user authenticated expired?
         $authenticated_time = Session::get('two_factor_authenticated_time');
         return $authenticated_time->diffInMinutes(now()) >= config('dragonzap_2factor.authentication.expires_in_minutes');
