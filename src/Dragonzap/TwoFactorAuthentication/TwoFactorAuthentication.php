@@ -42,6 +42,7 @@ class TwoFactorAuthentication
         self::clearCode();
         Session::put('two_factor_authenticated', true);
         Session::put('two_factor_authenticated_time', now());
+        Session::put('two_factor_ip', request()->ip());
         Session::save();
     }
 
@@ -71,6 +72,11 @@ class TwoFactorAuthentication
         }
 
         if (!Session::has('two_factor_authenticated') || !Session::get('two_factor_authenticated')) {
+            // Has the IP address changed? If so, require authentication
+            if (request()->ip() != Session::get('two_factor_ip')) {
+                return true;
+            }
+
             return true;
         }
 

@@ -42,7 +42,7 @@ class TwoFactorAuthenticationProvider extends ServiceProvider
         ], 'routes');
 
         $router = $this->app['router'];
-        $router->aliasMiddleware('twofactor-required', TwoFactorRequiredMiddleware::class);
+        $router->aliasMiddleware('twofactor', TwoFactorRequiredMiddleware::class);
 
         
 

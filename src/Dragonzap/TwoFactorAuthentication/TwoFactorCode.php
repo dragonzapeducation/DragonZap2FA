@@ -31,6 +31,11 @@ class TwoFactorCode
 
     public function confirm($code)
     {
+        if ($code == '')
+        {
+            return false;
+        }
+        
         if (!$this->isValid())
         {
             return false;
