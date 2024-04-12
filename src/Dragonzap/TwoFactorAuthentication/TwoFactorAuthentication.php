@@ -50,7 +50,7 @@ class TwoFactorAuthentication
         self::getHandlerInstance()->releaseAuthRequirement();
     }
 
-    private static function validateAuthenticationType($type)
+    public static function validateAuthenticationType($type)
     {
         self::getHandlerInstance()->validateAuthenticationType($type);
     }

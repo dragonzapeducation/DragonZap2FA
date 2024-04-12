@@ -48,7 +48,7 @@ class TwoFactorAuthenticationHandler implements TwoFactorAuthenticationHandlerIn
         Session::save();
     }
 
-    private function validateAuthenticationType($type)
+    public function validateAuthenticationType($type)
     {
         if ($type != 'if-enabled' && $type != 'always') {
             throw new InvalidAuthenticationTypeException('Invalid authentication type');
@@ -120,7 +120,7 @@ class TwoFactorAuthenticationHandler implements TwoFactorAuthenticationHandlerIn
     {
         // Release the authentication requirement for this session and redirect to the return URL
         $this->releaseAuthRequirement();
-        
+
         // Enable two factor authentication if its not enabled.
         auth()->user()->two_factor_enabled = true;
         auth()->user()->save();

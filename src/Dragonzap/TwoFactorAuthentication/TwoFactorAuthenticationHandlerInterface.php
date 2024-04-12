@@ -22,7 +22,7 @@ interface TwoFactorAuthenticationHandlerInterface
      * @return bool
      */
     public  function releaseAuthRequirement(): void;
-    private function validateAuthenticationType($type);
+    public function validateAuthenticationType($type);
     /**
      * Checks if the user needs to authenticate with two factor authentication
      * @param string $type This is the type of authentication required. 'if-enabled' means that the user must authenticate if two factor authentication is enabled, 'always' means that the user must always authenticate with two factor authentication regardless of the setting.
