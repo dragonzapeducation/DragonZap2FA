@@ -9,7 +9,7 @@ class TwoFactorAuthentication
 
     private static $handlerInstance = null;
 
-    public static function getHandlerInstance(): TwoFactorAuthenticationHandlerInterface
+    public static function getHandlerInstance()
     {
         if (self::$handlerInstance == null) {
             self::$handlerInstance = new (config('dragonzap_2factor.authentication.handler.class'))();
