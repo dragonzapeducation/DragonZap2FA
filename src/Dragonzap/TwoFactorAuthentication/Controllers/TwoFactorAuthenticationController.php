@@ -39,7 +39,8 @@ class TwoFactorAuthenticationController
         if ($okay) {
             // Release the authentication requirement for this session and redirect to the return URL
             TwoFactorAuthentication::releaseAuthRequirement();
-            auth()->user()->two_factor_authenticated = true;
+            // Enable two factor authentication if its not enabled.
+            auth()->user()->two_factor_enabled = true;
             auth()->user()->save();
             return redirect()->to(TwoFactorAuthentication::getReturnUrl());
         } else {
