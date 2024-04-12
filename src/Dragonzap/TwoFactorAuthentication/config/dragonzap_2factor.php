@@ -13,6 +13,12 @@ return [
    'authentication' => [
        'expires_in_minutes' => env('DRAGONZAP_2FACTOR_AUTHENTICATION_EXPIRES_IN_MINUTES', 15),
    ],
+   'messages' => [
+    'code_sent' => 'A code has been sent to you. Please enter it below.',
+    'code_invalid' => 'The code is invalid or expired.',
+    'no_code_provided' => 'No code was provided.',
+    'code_incorrect' => 'The code is incorrect.',
+   ],
    'notification' => [
     // You can change the notification subject for the TwoFactorCodeNotification class here
     'subject' => 'Confirm your two factor authentication code',

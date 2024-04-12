@@ -13,8 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('courses', function (Blueprint $table) {
-            $table->boolean('two_factor_enabled')->default(0);
+        Schema::table('users', function (Blueprint $table) {
+            $table->boolean('two_factor_enabled')->default(0)->comment('This is true if the user has two factor authentication enabled');
         });
     }
 
@@ -25,7 +25,7 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('courses', function (Blueprint $table) {
+        Schema::table('users', function (Blueprint $table) {
             $table->dropColumn('two_factor_enabled');
         });
     }

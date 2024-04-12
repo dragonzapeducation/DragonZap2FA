@@ -1,9 +1,16 @@
 <p>
-    We have sent you a two factor authentication code to your email address. Please enter the code below.
+    We have sent you a two factor authentication code to your email address. Please enter the code below. <a
+        href="{{ route('dragonzap.two_factor_generate_code') }}">Click here</a> to request a new code.
 
     @if ($errors->has('code'))
         <div class="alert alert-danger">
             {{ $errors->first('code') }}
+        </div>
+    @endif
+
+    @if (session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
         </div>
     @endif
 
