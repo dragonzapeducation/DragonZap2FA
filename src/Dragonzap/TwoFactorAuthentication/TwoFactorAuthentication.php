@@ -6,14 +6,22 @@ use Illuminate\Support\Facades\Session;
 
 class TwoFactorAuthentication
 {
+
+    private static $handlerInstance = null;
+
+    public static function getHandlerInstance(): TwoFactorAuthenticationHandlerInterface
+    {
+        if (self::$handlerInstance == null) {
+            self::$handlerInstance = new (config('dragonzap_2factor.authentication.handler.class'))();
+        }
+
+        return self::$handlerInstance;
+    }
+
     public static function generateCode(): TwoFactorCode
     {
         // Secure random
-        $random_code = random_int(100000, 999999);
-        Session::put('two_factor_code', $random_code);
-        Session::put('two_factor_code_time', now());
-        Session::save();
-        return new TwoFactorCode($random_code, now());
+        return self::getHandlerInstance()->generateCode();
     }
 
     /**
@@ -21,15 +29,15 @@ class TwoFactorAuthentication
      */
     public static function setReturnUrl(string $url): void
     {
-        Session::put('two_factor_return_url', $url);
-        Session::save();
+        self::getHandlerInstance()->setReturnUrl($url);
     }
     /**
      * Gets the return URL for the two factor authentication process
      */
     public static function getReturnUrl(): string
     {
-        return Session::get('two_factor_return_url');
+        return self::getHandlerInstance()->getReturnUrl();
+
     }
 
     /**
@@ -39,18 +47,12 @@ class TwoFactorAuthentication
      */
     public static function releaseAuthRequirement(): void
     {
-        self::clearCode();
-        Session::put('two_factor_authenticated', true);
-        Session::put('two_factor_authenticated_time', now());
-        Session::put('two_factor_ip', request()->ip());
-        Session::save();
+        self::getHandlerInstance()->releaseAuthRequirement();
     }
 
     private static function validateAuthenticationType($type)
     {
-        if ($type != 'if-enabled' && $type != 'always') {
-            throw new \Exception('Invalid authentication type');
-        }
+        self::getHandlerInstance()->validateAuthenticationType($type);
     }
 
     /**
@@ -60,58 +62,23 @@ class TwoFactorAuthentication
      */
     public static function isAuthenticationRequired($type = 'if-enabled'): bool
     {
-        self::validateAuthenticationType($type);
-        if (!config('dragonzap_2factor.enabled')) {
-            return false;
-        }
-
-        if ($type == 'if-enabled') {
-            if (!auth()->user()->two_factor_enabled) {
-                return false;
-            }
-        }
-
-        if (!Session::has('two_factor_authenticated') || !Session::get('two_factor_authenticated')) {
-            // Has the IP address changed? If so, require authentication
-            if (request()->ip() != Session::get('two_factor_ip')) {
-                return true;
-            }
-
-            return true;
-        }
-
-
-        // Has the IP address changed? If so, require authentication
-        if (request()->ip() != Session::get('two_factor_ip')) {
-            return true;
-        }
-
-        // Has the last time the user authenticated expired?
-        $authenticated_time = Session::get('two_factor_authenticated_time');
-        return $authenticated_time->diffInMinutes(now()) >= config('dragonzap_2factor.authentication.expires_in_minutes');
+        return self::getHandlerInstance()->isAuthenticationRequired($type);
     }
 
     public static function clearCode()
     {
-        Session::forget('two_factor_code');
-        Session::forget('two_factor_code_time');
-        Session::save();
+        self::getHandlerInstance()->clearCode();
     }
 
 
     public static function getGeneratedCode(): TwoFactorCode|null
     {
-        if (!Session::has('two_factor_code')) {
-            return null;
-        }
-
-        return new TwoFactorCode(Session::get('two_factor_code'), Session::get('two_factor_code_time'));
+        return self::getHandlerInstance()->getGeneratedCode();
     }
 
     public static function hasExistingCode(): bool
     {
-        $generated_code = self::getGeneratedCode();
-        return $generated_code !== null && $generated_code->isValid();
+        return self::getHandlerInstance()->hasExistingCode();
     }
 }
 

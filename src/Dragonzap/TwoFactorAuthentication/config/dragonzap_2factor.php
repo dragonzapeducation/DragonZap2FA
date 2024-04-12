@@ -12,6 +12,11 @@ return [
    'enabled' => env('DRAGONZAP_2FACTOR_ENABLED', true),
    'authentication' => [
        'expires_in_minutes' => env('DRAGONZAP_2FACTOR_AUTHENTICATION_EXPIRES_IN_MINUTES', 15),
+       'handler' => [
+        // This is the authentication handler class, you can override your own class here
+        // if you wish to have custom functionality
+        'class' => \Dragonzap\TwoFactorAuthentication\TwoFactorAuthenticationHandler::class,
+       ]
    ],
    'messages' => [
     'code_sent' => 'A code has been sent to you. Please enter it below.',
@@ -25,5 +30,6 @@ return [
     // For more customization options, you can create your own notification class and set it here
     // Allowing you to extend to sms messages, slack, etc.
     'class' => \Dragonzap\TwoFactorAuthentication\Notifications\TwoFactorCodeNotification::class,
-   ]
+   ],
+   
 ];
