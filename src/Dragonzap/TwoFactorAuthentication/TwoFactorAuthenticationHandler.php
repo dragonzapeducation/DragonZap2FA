@@ -14,8 +14,10 @@ class TwoFactorAuthenticationHandler implements TwoFactorAuthenticationHandlerIn
         $random_code = random_int(100000, 999999);
         Session::put('two_factor_code', $random_code);
         Session::put('two_factor_code_time', now());
+        Session::put('two_factor_user_id', auth()->user()->id);
+
         Session::save();
-        return new TwoFactorCode($random_code, now());
+        return new TwoFactorCode($random_code, now(), auth()->user()->id);
     }
 
     /**
@@ -74,11 +76,6 @@ class TwoFactorAuthenticationHandler implements TwoFactorAuthenticationHandlerIn
         }
 
         if (!Session::has('two_factor_authenticated') || !Session::get('two_factor_authenticated')) {
-            // Has the IP address changed? If so, require authentication
-            if (request()->ip() != Session::get('two_factor_ip')) {
-                return true;
-            }
-
             return true;
         }
 
@@ -87,6 +84,12 @@ class TwoFactorAuthenticationHandler implements TwoFactorAuthenticationHandlerIn
         if (request()->ip() != Session::get('two_factor_ip')) {
             return true;
         }
+
+        // Has the user id changed?
+        if (auth()->user()->id != Session::get('two_factor_user_id')) {
+            return true;
+        }
+        
 
         // Has the last time the user authenticated expired?
         $authenticated_time = Session::get('two_factor_authenticated_time');
@@ -107,7 +110,7 @@ class TwoFactorAuthenticationHandler implements TwoFactorAuthenticationHandlerIn
             return null;
         }
 
-        return new TwoFactorCode(Session::get('two_factor_code'), Session::get('two_factor_code_time'));
+        return new TwoFactorCode(Session::get('two_factor_code'), Session::get('two_factor_code_time'), Session::get('two_factor_user_id'));
     }
 
     public function hasExistingCode(): bool

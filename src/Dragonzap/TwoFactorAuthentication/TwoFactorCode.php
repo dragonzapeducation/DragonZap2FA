@@ -9,10 +9,13 @@ class TwoFactorCode
 {
     protected $code;
     protected $time;
-    public function __construct($code, $time)
+
+    protected $user_id;
+    public function __construct($code, $time, $user_id)
     {
         $this->code = $code;
         $this->time = $time;
+        $this->user_id = $user_id;
     }
 
     public function getCode()
@@ -26,7 +29,7 @@ class TwoFactorCode
     }
     public function isValid()
     {
-        return !$this->isExpired();
+        return !$this->isExpired() && $this->user_id == Auth::user()->id;
     }
 
     public function confirm($code)
@@ -45,6 +48,7 @@ class TwoFactorCode
         {
             return true;
         }
+        
         return false;
     }
 
