@@ -33,5 +33,8 @@ interface TwoFactorAuthenticationHandlerInterface
     public function getGeneratedCode(): TwoFactorCode|null;
 
     public function hasExistingCode(): bool;
+
+    public function authenticationCompleted() : void;
+
 }
 

@@ -6,7 +6,7 @@ use Dragonzap\TwoFactorAuthentication\Exceptions\InvalidAuthenticationTypeExcept
 use Illuminate\Support\Facades\Session;
 
 class TwoFactorAuthenticationHandler implements TwoFactorAuthenticationHandlerInterface
-{  
+{
 
     public function generateCode(): TwoFactorCode
     {
@@ -115,5 +115,16 @@ class TwoFactorAuthenticationHandler implements TwoFactorAuthenticationHandlerIn
         $generated_code = $this->getGeneratedCode();
         return $generated_code !== null && $generated_code->isValid();
     }
+
+    public function authenticationCompleted(): void
+    {
+        // Release the authentication requirement for this session and redirect to the return URL
+        $this->releaseAuthRequirement();
+        
+        // Enable two factor authentication if its not enabled.
+        auth()->user()->two_factor_enabled = true;
+        auth()->user()->save();
+    }
+
 }
 

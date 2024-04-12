@@ -80,5 +80,10 @@ class TwoFactorAuthentication
     {
         return self::getHandlerInstance()->hasExistingCode();
     }
+
+    public static function authenticationCompleted() : void
+    {
+        self::getHandlerInstance()->authenticationCompleted();
+    }
 }
 

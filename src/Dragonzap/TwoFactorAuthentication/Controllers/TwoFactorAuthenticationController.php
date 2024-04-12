@@ -42,11 +42,7 @@ class TwoFactorAuthenticationController
 
         $okay = $two_factor_code->confirm($code);
         if ($okay) {
-            // Release the authentication requirement for this session and redirect to the return URL
-            TwoFactorAuthentication::releaseAuthRequirement();
-            // Enable two factor authentication if its not enabled.
-            auth()->user()->two_factor_enabled = true;
-            auth()->user()->save();
+            TwoFactorAuthentication::authenticationCompleted();
             return redirect()->to(TwoFactorAuthentication::getReturnUrl());
         } else {
             return redirect()->back()->withErrors(['code' => config('dragonzap_2factor.messages.code_incorrect')]);
