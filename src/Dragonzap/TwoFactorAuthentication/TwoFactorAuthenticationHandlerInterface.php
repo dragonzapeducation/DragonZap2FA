@@ -36,5 +36,7 @@ interface TwoFactorAuthenticationHandlerInterface
 
     public function authenticationCompleted() : void;
 
+    public function hasAuthenticatedBefore() : bool;
+
 }
 

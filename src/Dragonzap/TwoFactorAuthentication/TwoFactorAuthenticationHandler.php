@@ -52,7 +52,7 @@ class TwoFactorAuthenticationHandler implements TwoFactorAuthenticationHandlerIn
 
     public function validateAuthenticationType($type)
     {
-        if ($type != 'if-enabled' && $type != 'always') {
+        if ($type != 'if-enabled' && $type != 'always' || $type != 'only-once-if-enabled' || $type != 'only-once-always') {
             throw new InvalidAuthenticationTypeException('Invalid authentication type');
         }
     }
@@ -69,7 +69,7 @@ class TwoFactorAuthenticationHandler implements TwoFactorAuthenticationHandlerIn
             return false;
         }
 
-        if ($type == 'if-enabled') {
+        if ($type == 'if-enabled' || $type == 'only-once-if-enabled') {
             if (!auth()->user()->two_factor_enabled) {
                 return false;
             }
@@ -89,7 +89,17 @@ class TwoFactorAuthenticationHandler implements TwoFactorAuthenticationHandlerIn
         if (auth()->user()->id != Session::get('two_factor_user_id')) {
             return true;
         }
-        
+
+        // If the type is 'only-once' and the user has authenticated before, then we never have to authenticate
+        // this route again, because the user has already authenticated once before.
+        if ($type == 'only-once-if-enabled' || $type == 'only-once-always') {
+            if ($this->hasAuthenticatedBefore()) {
+                die('test it works');
+                return false;
+            }
+        }
+
+        // Not an only once? Then we need to check if the last time the user authenticated has expired
 
         // Has the last time the user authenticated expired?
         $authenticated_time = Session::get('two_factor_authenticated_time');
@@ -127,6 +137,11 @@ class TwoFactorAuthenticationHandler implements TwoFactorAuthenticationHandlerIn
         // Enable two factor authentication if its not enabled.
         auth()->user()->two_factor_enabled = true;
         auth()->user()->save();
+    }
+
+    public function hasAuthenticatedBefore(): bool
+    {
+        return Session::has('two_factor_authenticated') && Session::get('two_factor_authenticated');
     }
 
 }
