@@ -73,7 +73,7 @@ return [
 
 These settings allow you to change the messages, notification class along with how long 2FA will last before its required again for the protected pages
 
-## Different route middlewear 
+## Different route middleware
 - **"twofactor:always"** Authentication will be required for the given route regardless if the user has 2FA enabled, once authenticated 2FA will automatically be switched on for the users account. Functionality can be modified by extending TwoFactorAuthenticationHandler class and overriding the authenticationCompleted method. Then update the handler class in the configuration file.
 - **"twofactor:if-enabled"** Authentication will be required for the given route only if the user has two factor authentication enabled. 
 - **"twofactor:only-once-if-enabled"** If applied on a route then authentication will be required only once in the entire user session for that route to be accessible. User can authenticate on any route to be able to pass this check, so long as they have authenticated on any route in the current session. User will not be required to authenticate if they do not have 2FA enabled.
