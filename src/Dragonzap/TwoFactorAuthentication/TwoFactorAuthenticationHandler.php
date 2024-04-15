@@ -52,7 +52,7 @@ class TwoFactorAuthenticationHandler implements TwoFactorAuthenticationHandlerIn
 
     public function validateAuthenticationType($type)
     {
-        if ($type != 'if-enabled' && $type != 'always' || $type != 'only-once-if-enabled' || $type != 'only-once-always') {
+        if ($type != 'if-enabled' && $type != 'always' && $type != 'only-once-if-enabled' && $type != 'only-once-always') {
             throw new InvalidAuthenticationTypeException('Invalid authentication type');
         }
     }
@@ -94,7 +94,6 @@ class TwoFactorAuthenticationHandler implements TwoFactorAuthenticationHandlerIn
         // this route again, because the user has already authenticated once before.
         if ($type == 'only-once-if-enabled' || $type == 'only-once-always') {
             if ($this->hasAuthenticatedBefore()) {
-                die('test it works');
                 return false;
             }
         }
