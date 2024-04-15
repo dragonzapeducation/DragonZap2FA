@@ -14,21 +14,25 @@ class TwoFactorRequiredMiddleware
      * @param  \Closure  $next
      * @return mixed
      */
-    public function handle($request, Closure $next, $type = null)
-    {
-        if (!$type) {
-            $type = 'if-enabled';
-        }
-
-
-        if (!TwoFactorAuthentication::isAuthenticationRequired($type)) {
-            return $next($request);
-        }
-
-        TwoFactorAuthentication::setReturnUrl($request->url());
-
-        return redirect()->route('dragonzap.two_factor_generate_code');
-
-    }
+   
+     public function handle($request, Closure $next, $type = null)
+     {
+         if (!$type) {
+             $type = 'if-enabled';
+         }
+     
+         if (!TwoFactorAuthentication::isAuthenticationRequired($type)) {
+             return $next($request);
+         }
+     
+         $parameters = [];
+         $urlWithParameters = $request->fullUrlWithQuery($parameters);
+     
+         TwoFactorAuthentication::setReturnUrl($urlWithParameters);
+     
+         return redirect()->route('dragonzap.two_factor_generate_code');
+     }
+     
+    
 
 }
