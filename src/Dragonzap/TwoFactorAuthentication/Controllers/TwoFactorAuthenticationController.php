@@ -72,6 +72,8 @@ class TwoFactorAuthenticationController
             return redirect()->back()->withErrors(['totp_id' => 'Invalid TOTP ID provided']);
         }
 
+        echo $totp->friendly_name;
+        exit;
         if (!request()->has('code')) {
             return redirect()->back()->withErrors(['code' => 'No code provided']);
         }
