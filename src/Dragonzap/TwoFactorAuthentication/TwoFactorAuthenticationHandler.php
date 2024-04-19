@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Session;
 class TwoFactorAuthenticationHandler implements TwoFactorAuthenticationHandlerInterface
 {
 
+    
     public function generateCode(): TwoFactorCode
     {
         // Secure random

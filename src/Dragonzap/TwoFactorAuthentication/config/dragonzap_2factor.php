@@ -13,6 +13,16 @@ return [
    'totp' => [
        'issuer' => env('DRAGONZAP_2FACTOR_TOTP_ISSUER', 'MyExampleApp'),
        'model' => \Dragonzap\TwoFactorAuthentication\Models\TwoFactorTotp::class,
+       'messages' => [
+        'check_code' => 'Please check your authenticator app for the code.',
+        'invalid_authenticator' => 'Misconfigured authenticator contact support',
+        'code_invalid' => 'The code is invalid or expired.',
+        'no_code_provided' => 'No code was provided.',
+        'code_incorrect' => 'The code is incorrect.',
+        'wrong_2fa_type' => 'A different two factor type is required for this user account.',
+        'no_totp_id_provided' => 'No TOTP ID was provided.',
+        'invalid_totp_id' => 'Invalid TOTP ID provided.',
+       ]
    ],
    'authentication' => [
        'expires_in_minutes' => env('DRAGONZAP_2FACTOR_AUTHENTICATION_EXPIRES_IN_MINUTES', 15),
@@ -27,6 +37,7 @@ return [
     'code_invalid' => 'The code is invalid or expired.',
     'no_code_provided' => 'No code was provided.',
     'code_incorrect' => 'The code is incorrect.',
+    'wrong_2fa_type' => 'A different two factor type is required for this user account.',
    ],
    'notification' => [
     // You can change the notification subject for the TwoFactorCodeNotification class here

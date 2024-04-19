@@ -2,6 +2,7 @@
 
 namespace Dragonzap\TwoFactorAuthentication;
 
+use Dragonzap\TwoFactorAuthentication\Exceptions\InvalidAuthenticationTypeException;
 use Illuminate\Support\Facades\Session;
 
 class TwoFactorAuthentication
@@ -84,6 +85,20 @@ class TwoFactorAuthentication
     public static function authenticationCompleted() : void
     {
         self::getHandlerInstance()->authenticationCompleted();
+    }
+
+    public static function validateTwoFactorType($type)
+    {
+        if ($type != 'otp' && $type != 'totp') {
+            throw new InvalidAuthenticationTypeException('Invalid two factor type');
+        }
+    }
+    public static function updateAuthenticationTypeForUser($user, $type)
+    {
+        self::validateTwoFactorType($type);
+        $user->two_factor_enabled = true;
+        $user->two_factor_type = $type;
+        $user->save();
     }
 }
 

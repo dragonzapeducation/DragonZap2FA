@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('two_factor_type', 10)->default('otp')->comment('can be otp or totp or something custom');
+            $table->string('two_factor_type', 10)->default('otp')->comment('can be otp or totp. Use otp for standard email codes, totp for use with microsoft authenticator and google authenticators.');
         });
     }
 

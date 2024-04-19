@@ -29,7 +29,7 @@ class TwoFactorRequiredMiddleware
          $urlWithParameters = $request->fullUrlWithQuery($parameters);
      
          TwoFactorAuthentication::setReturnUrl($urlWithParameters);
-     
+         
          return redirect()->route('dragonzap.two_factor_generate_code');
      }
      
