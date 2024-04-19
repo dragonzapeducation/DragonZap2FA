@@ -10,6 +10,7 @@ use OTPHP\TOTP;
 class TwoFactorTotp extends Model
 {
     use HasFactory;
+    protected $table = 'dragonzap_twofactor_totp';
 
     // Has many users
     public function user()
