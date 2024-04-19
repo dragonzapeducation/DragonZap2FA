@@ -10,6 +10,10 @@
  
 return [
    'enabled' => env('DRAGONZAP_2FACTOR_ENABLED', true),
+   'totp' => [
+       'issuer' => env('DRAGONZAP_2FACTOR_TOTP_ISSUER', 'MyExampleApp'),
+       'model' => \Dragonzap\TwoFactorAuthentication\Models\TwoFactorTotp::class,
+   ],
    'authentication' => [
        'expires_in_minutes' => env('DRAGONZAP_2FACTOR_AUTHENTICATION_EXPIRES_IN_MINUTES', 15),
        'handler' => [

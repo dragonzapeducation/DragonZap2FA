@@ -13,7 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('dragonzap_twofactor_totp', function (Blueprint $table) {
+        Schema::create('dragonzap_twofactor_totp', function (Blueprint $table) {
+            $table->id();
             // User id forigen key
             $table->unsignedBigInteger('user_id');
             $table->string('friendly_name', 255)->default('Authenticator');
@@ -22,7 +23,12 @@ return new class extends Migration
             // Secret key
             $table->string('secret_key', 255);
 
-            // 
+            // Confirmed
+            $table->boolean('confirmed')->default(0);
+
+            // Last used
+            $table->dateTime('last_used')->nullable();
+
             // Timestamps
             $table->timestamps();
         });
@@ -35,8 +41,7 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('two_factor_enabled');
-        });
+        Schema::dropIfExists('dragonzap_twofactor_totp');
+
     }
 };

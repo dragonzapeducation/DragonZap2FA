@@ -5,7 +5,7 @@
         'type' => 'laravel-package',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => 'f5ffb97b38a06d68c609e5a41c1aac8bbe1fb19b',
+        'reference' => '94514ae266626769b400ead803cddf63ed806ca4',
         'name' => 'dragonzap/2fa',
         'dev' => true,
     ),
@@ -70,7 +70,7 @@
             'type' => 'laravel-package',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => 'f5ffb97b38a06d68c609e5a41c1aac8bbe1fb19b',
+            'reference' => '94514ae266626769b400ead803cddf63ed806ca4',
             'dev_requirement' => false,
         ),
         'egulias/email-validator' => array(
@@ -457,32 +457,14 @@
             'reference' => '58c4c58cf23df7f498daeb97092e34f5259feb6a',
             'dev_requirement' => false,
         ),
-        'nyholm/psr7' => array(
-            'pretty_version' => '1.8.1',
-            'version' => '1.8.1.0',
+        'paragonie/constant_time_encoding' => array(
+            'pretty_version' => 'v2.6.3',
+            'version' => '2.6.3.0',
             'type' => 'library',
-            'install_path' => __DIR__ . '/../nyholm/psr7',
+            'install_path' => __DIR__ . '/../paragonie/constant_time_encoding',
             'aliases' => array(),
-            'reference' => 'aa5fc277a4f5508013d571341ade0c3886d4d00e',
+            'reference' => '58c3f47f650c94ec05a151692652a868995d2938',
             'dev_requirement' => false,
-        ),
-        'php-http/async-client-implementation' => array(
-            'dev_requirement' => false,
-            'provided' => array(
-                0 => '*',
-            ),
-        ),
-        'php-http/client-implementation' => array(
-            'dev_requirement' => false,
-            'provided' => array(
-                0 => '*',
-            ),
-        ),
-        'php-http/message-factory-implementation' => array(
-            'dev_requirement' => false,
-            'provided' => array(
-                0 => '1.0',
-            ),
         ),
         'phpoption/phpoption' => array(
             'pretty_version' => '1.9.2',
@@ -653,6 +635,15 @@
                 0 => '*',
             ),
         ),
+        'spomky-labs/otphp' => array(
+            'pretty_version' => '11.2.2',
+            'version' => '11.2.2.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../spomky-labs/otphp',
+            'aliases' => array(),
+            'reference' => 'b737d1c6330beae7c0bc225d3e848805b352fe42',
+            'dev_requirement' => false,
+        ),
         'symfony/clock' => array(
             'pretty_version' => 'v7.0.5',
             'version' => '7.0.5.0',
@@ -730,30 +721,6 @@
             'aliases' => array(),
             'reference' => '6e5688d69f7cfc4ed4a511e96007e06c2d34ce56',
             'dev_requirement' => false,
-        ),
-        'symfony/http-client' => array(
-            'pretty_version' => 'v7.0.6',
-            'version' => '7.0.6.0',
-            'type' => 'library',
-            'install_path' => __DIR__ . '/../symfony/http-client',
-            'aliases' => array(),
-            'reference' => '6e70473909f46fe5dd3b994a0f1b20ecb6b2f858',
-            'dev_requirement' => false,
-        ),
-        'symfony/http-client-contracts' => array(
-            'pretty_version' => 'v3.4.2',
-            'version' => '3.4.2.0',
-            'type' => 'library',
-            'install_path' => __DIR__ . '/../symfony/http-client-contracts',
-            'aliases' => array(),
-            'reference' => 'b6b5c876b3a4ed74460e2c5ac53bbce2f12e2a7e',
-            'dev_requirement' => false,
-        ),
-        'symfony/http-client-implementation' => array(
-            'dev_requirement' => false,
-            'provided' => array(
-                0 => '3.0',
-            ),
         ),
         'symfony/http-foundation' => array(
             'pretty_version' => 'v7.0.6',
