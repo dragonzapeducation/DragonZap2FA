@@ -2,6 +2,7 @@
 
 namespace Dragonzap\TwoFactorAuthentication\Controllers;
 
+use Dragonzap\TwoFactorAuthentication\Models\TwoFactorTotp;
 use Dragonzap\TwoFactorAuthentication\TwoFactorAuthentication;
 
 class TwoFactorAuthenticationController
@@ -18,8 +19,19 @@ class TwoFactorAuthenticationController
 
     public function twoFactorEnterCode()
     {
-        // View that asks for the code received.
-        return view('dragonzap_2factor::enter_code');
+        if (auth()->user()->two_factor_type == 'otp') {
+            // View that asks for the code received.
+            return view('dragonzap_2factor::enter_code');
+        }
+
+        if (auth()->user()->two_factor_type == 'totp') {
+            $totps = TwoFactorTotp::forUser(auth()->user())->orderBy('created_at', 'desc')->get();
+
+            // View that asks for the code received.
+            return view('dragonzap_2factor::enter_totp_code', compact('totps'));
+        }
+
+        abort(500, 'Invalid two factor type of user account contact support');
     }
 
     public function confirmTwoFactorCode()
@@ -30,8 +42,7 @@ class TwoFactorAuthenticationController
 
         $code = request()->get('code');
         // If the code has been sent as an array of numbers (e.g. [1, 2, 3, 4]), convert it to a string
-        if (is_array($code))
-        {
+        if (is_array($code)) {
             $code = implode('', $code);
         }
 
