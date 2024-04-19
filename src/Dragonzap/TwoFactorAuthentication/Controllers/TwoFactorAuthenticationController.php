@@ -62,7 +62,6 @@ class TwoFactorAuthenticationController
 
     public function twoFactorEnterTotpCodeSubmit()
     {
-        die('fuck');
         if (!request()->has('totp_id')) {
             return redirect()->back()->withErrors(['totp_id' => 'No TOTP ID provided']);
         }
