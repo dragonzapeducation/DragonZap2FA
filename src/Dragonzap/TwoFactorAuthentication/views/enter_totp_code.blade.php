@@ -1,6 +1,6 @@
 <p>
 
-    @if (empty($totps))
+    @if (count($totps) == 0)
         <p class="text-danger">You have TOTP authentication enabled but have not set up any TOTP authenticator apps.
             Please
             set up an authenticator app to use TOTP authentication. You will need to contact support to solve this
@@ -12,12 +12,18 @@
             </div>
         @endif
 
+        @if ($errors->has('totp_id'))
+        <div class="alert alert-danger">
+            {{ $errors->first('totp_id') }}
+        </div>
+    @endif
+
         @if (session('success'))
             <div class="alert alert-success">
                 {{ session('success') }}
             </div>
         @endif
-        <form method="POST" action="{{ route('dragonzap.two_factor_confirm_code') }}">
+        <form method="POST" action="{{ route('dragonzap.two_factor_confirm_totp_code') }}">
             @csrf
             <div class="form-group">
                 <label for="code">Code on your authenticator application</label>

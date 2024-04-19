@@ -59,4 +59,30 @@ class TwoFactorAuthenticationController
             return redirect()->back()->withErrors(['code' => config('dragonzap_2factor.messages.code_incorrect')]);
         }
     }
+
+    public function twoFactorEnterTotpCodeSubmit()
+    {
+        die('fuck');
+        if (!request()->has('totp_id')) {
+            return redirect()->back()->withErrors(['totp_id' => 'No TOTP ID provided']);
+        }
+
+        $totp_id = request()->get('totp_id');
+        $totp = TwoFactorTotp::find($totp_id);
+        if (!$totp) {
+            return redirect()->back()->withErrors(['totp_id' => 'Invalid TOTP ID provided']);
+        }
+
+        if (!request()->has('code')) {
+            return redirect()->back()->withErrors(['code' => 'No code provided']);
+        }
+
+        $code = request()->get('code');
+        if (!$totp->verify($code)) {
+            return redirect()->back()->withErrors(['code' => 'Invalid code provided']);
+        }
+
+        TwoFactorAuthentication::authenticationCompleted();
+        return redirect()->to(TwoFactorAuthentication::getReturnUrl());
+    }
 }
