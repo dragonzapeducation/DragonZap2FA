@@ -3,6 +3,7 @@
 namespace Dragonzap\TwoFactorAuthentication;
 
 use Dragonzap\TwoFactorAuthentication\Exceptions\InvalidAuthenticationTypeException;
+use Dragonzap\TwoFactorAuthentication\Models\TwoFactorTotp;
 use Illuminate\Support\Facades\Session;
 
 class TwoFactorAuthentication
@@ -104,6 +105,26 @@ class TwoFactorAuthentication
         $user->two_factor_enabled = true;
         $user->two_factor_type = $type;
         $user->save();
+        
+        // We will mark authentication as completed so they dont get locked out right away
+        self::authenticationCompleted();
     }
+
+    /**
+     * Gets the two factor type for the given user.
+     */
+    public static function getTwoFactorTypeForUser($user)
+    {
+        return $user->two_factor_type;
+    }
+
+    /**
+     * Gets all the TOTP registered authenticators for the given user.
+     */
+    public static function getTotpsForUser($user)
+    {
+        return TwoFactorTotp::forUser($user)->get();
+    }   
+
 }
 
