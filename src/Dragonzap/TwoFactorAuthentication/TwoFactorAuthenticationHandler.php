@@ -34,6 +34,13 @@ class TwoFactorAuthenticationHandler implements TwoFactorAuthenticationHandlerIn
      */
     public function getReturnUrl(): string
     {
+        // We must deal with senarios where the return URL is the two factor authentication URL
+        if (Session::get('two_factor_return_url') == route('dragonzap.two_factor_generate_code') ||
+            Session::get('two_factor_return_url') == route('dragonzap.two_factor_enter_code'))
+        {
+            // Just go to home..
+            return app('url')->to('/');
+        }
         return Session::get('two_factor_return_url');
     }
 
