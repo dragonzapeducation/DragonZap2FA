@@ -76,6 +76,7 @@ class TwoFactorAuthenticationController
 
     public function twoFactorEnterTotpCodeSubmit()
     {
+
         // We wont allow TOTP authentication if the user has not selected TOTP as their two factor type
         if (auth()->user()->two_factor_type != 'totp') {
             return redirect()->back()->withErrors(['code' => config('dragonzap_2factor.messages.wrong_2fa_type')]);
@@ -86,20 +87,23 @@ class TwoFactorAuthenticationController
             return redirect()->back()->withErrors(['totp_id' => config('dragonzap_2factor.totp.messages.no_totp_id_provided')]);
         }
 
+        
         $totp_id = request()->get('totp_id');
         $totp = TwoFactorTotp::find($totp_id);
         if (!$totp) {
             return redirect()->back()->withErrors(['totp_id' => config('dragonzap_2factor.totp.messages.invalid_totp_id')]);
         }
 
+        
         // Only allow the user to confirm their own TOTP
-        if (!$totp->user_id != auth()->user()->id) {
+        if ($totp->user_id != auth()->user()->id) {
             return redirect()->back()->withErrors(['totp_id' => config('dragonzap_2factor.totp.messages.invalid_totp_id')]);
         }
 
         if (!request()->has('code')) {
             return redirect()->back()->withErrors(['code' => config('dragonzap_2factor.totp.messages.no_code_provided')]);
         }
+
 
         $code = request()->get('code');
         try {
