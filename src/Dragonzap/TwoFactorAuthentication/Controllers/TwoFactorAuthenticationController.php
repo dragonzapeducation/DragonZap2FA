@@ -9,6 +9,10 @@ class TwoFactorAuthenticationController
 {
     public function twoFactorGenerateCode()
     {
+
+        // Set the authenticating user this prevents a user from authenticating on behalf of another.
+        TwoFactorAuthentication::setAuthenticatingUser(auth()->user());
+
         // TOTP just needs to be entered right away no need to generate any codes...
         if (auth()->user()->two_factor_type == 'totp') {
             return redirect()->route('dragonzap.two_factor_enter_code');

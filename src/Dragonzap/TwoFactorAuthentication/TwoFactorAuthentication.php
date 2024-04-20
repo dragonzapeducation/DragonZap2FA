@@ -19,6 +19,11 @@ class TwoFactorAuthentication
         return self::$handlerInstance;
     }
 
+    public static function setAuthenticatingUser($user) : void
+    {
+        self::getHandlerInstance()->setAuthenticatingUser($user);
+    }
+
     public static function generateCode(): TwoFactorCode
     {
         // Secure random

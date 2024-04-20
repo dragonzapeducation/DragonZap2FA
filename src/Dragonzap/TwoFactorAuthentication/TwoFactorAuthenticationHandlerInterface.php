@@ -6,6 +6,8 @@ use Dragonzap\TwoFactorAuthentication\TwoFactorCode;
 
 interface TwoFactorAuthenticationHandlerInterface
 {
+
+    public function setAuthenticatingUser($user) : void;
     public function generateCode(): TwoFactorCode;
 
     /**

@@ -8,14 +8,19 @@ use Illuminate\Support\Facades\Session;
 class TwoFactorAuthenticationHandler implements TwoFactorAuthenticationHandlerInterface
 {
 
-    
+    public function setAuthenticatingUser($user) : void
+    {
+        Session::put('two_factor_user_id', auth()->user()->id);
+        Session::put('two_factor_ip', request()->ip());
+        Session::save();
+    }
+
     public function generateCode(): TwoFactorCode
     {
         // Secure random
         $random_code = random_int(100000, 999999);
         Session::put('two_factor_code', $random_code);
         Session::put('two_factor_code_time', now());
-        Session::put('two_factor_user_id', auth()->user()->id);
 
         Session::save();
         return new TwoFactorCode($random_code, now(), auth()->user()->id);
@@ -54,7 +59,7 @@ class TwoFactorAuthenticationHandler implements TwoFactorAuthenticationHandlerIn
         $this->clearCode();
         Session::put('two_factor_authenticated', true);
         Session::put('two_factor_authenticated_time', now());
-        Session::put('two_factor_ip', request()->ip());
+
         Session::save();
     }
 
