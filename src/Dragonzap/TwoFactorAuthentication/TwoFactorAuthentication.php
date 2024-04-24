@@ -118,12 +118,30 @@ class TwoFactorAuthentication
         return $user->two_factor_type;
     }
 
+
+    
+    /**
+     * Generates a TOTP for the given user
+     * @param $user The user to generate the TOTP for
+     * @param $friendly_name The friendly name for the TOTP
+     * @param $delete_others If true, all other TOTP's for the user will be deleted
+     */
+    public static function generateTotpForUser($user, $friendly_name=NULL, $delete_others=false) : TwoFactorTotp
+    {
+        if ($delete_others)
+        {
+            TwoFactorTotp::forUser($user)->delete();
+        }
+
+        return TwoFactorTotp::generateTotp($user, $friendly_name);
+    }
+
     /**
      * Gets all the TOTP registered authenticators for the given user.
      */
     public static function getTotpsForUser($user)
     {
-        return TwoFactorTotp::forUser($user)->get();
+        return TwoFactorTotp::forUser($user);
     }   
 
 }
