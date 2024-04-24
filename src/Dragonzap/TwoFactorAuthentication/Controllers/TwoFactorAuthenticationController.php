@@ -2,6 +2,7 @@
 
 namespace Dragonzap\TwoFactorAuthentication\Controllers;
 
+use Dragonzap\TwoFactorAuthentication\Exceptions\InvalidAuthenticationTypeException;
 use Dragonzap\TwoFactorAuthentication\Models\TwoFactorTotp;
 use Dragonzap\TwoFactorAuthentication\TwoFactorAuthentication;
 
@@ -26,7 +27,7 @@ class TwoFactorAuthenticationController
             return redirect()->route('dragonzap.two_factor_enter_code')->with('success', config('dragonzap_2factor.messages.code_sent'));
         }
 
-        abort(500, 'Invalid two factor type of user account contact support');
+        throw new InvalidAuthenticationTypeException('Invalid or unsupported two factor type of user account');
     }
 
     public function twoFactorEnterCode()
@@ -43,7 +44,7 @@ class TwoFactorAuthenticationController
             return view('dragonzap_2factor::enter_totp_code', compact('totps'));
         }
 
-        abort(500, 'Invalid two factor type of user account contact support');
+        throw new InvalidAuthenticationTypeException('Invalid or unsupported two factor type of user account');
     }
 
     public function confirmTwoFactorCode()
