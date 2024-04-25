@@ -52,7 +52,7 @@ class TwoFactorAuthenticationController
     {
         // If the standard OTP type is not selected then they wont be able to authenticate
         // through the use of OTP's that are sent to emails, phone numbers etc.
-        if (auth()->user()->two_factor_type != 'otp') {
+        if (TwoFactorAuthentication::getTwoFactorTypeForUser(auth()->user()) != 'otp') {
             return redirect()->back()->withErrors(['code' => 'Invalid two factor type of user account']);
         }
 
@@ -84,7 +84,7 @@ class TwoFactorAuthenticationController
     {
 
         // We wont allow TOTP authentication if the user has not selected TOTP as their two factor type
-        if (auth()->user()->two_factor_type != 'totp') {
+        if (TwoFactorAuthentication::getTwoFactorTypeForUser(auth()->user()) != 'totp') {
             return redirect()->back()->withErrors(['code' => config('dragonzap_2factor.messages.wrong_2fa_type')]);
         }
 
