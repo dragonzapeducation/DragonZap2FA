@@ -112,9 +112,20 @@ class TwoFactorAuthentication
 
     /**
      * Gets the two factor type for the given user.
+     * If the two_factor_type of a user is totp, otp will be returned if the user has no TOTP's records in the database.
+     * 
+     * Therefore when making your two factor update page you should use the two_factor_type column directly. 
+     * Using this function only for two factor decisions 
+     * 
+     * @param $user The user to get the two factor type for
      */
     public static function getTwoFactorTypeForUser($user)
     {
+        // No otps? Then even if we have a different two factor type selected we will default to OTP
+        if (self::getTotpsForUser($user)->confirmedOnly()->count() == 0)
+        {
+            return 'otp';
+        }
         return $user->two_factor_type;
     }
 

@@ -14,12 +14,13 @@ class TwoFactorAuthenticationController
         // Set the authenticating user this prevents a user from authenticating on behalf of another.
         TwoFactorAuthentication::setAuthenticatingUser(auth()->user());
 
+
         // TOTP just needs to be entered right away no need to generate any codes...
-        if (auth()->user()->two_factor_type == 'totp') {
+        if (TwoFactorAuthentication::getTwoFactorTypeForUser(auth()->user()) == 'totp') {
             return redirect()->route('dragonzap.two_factor_enter_code');
         }
 
-        if (auth()->user()->two_factor_type == 'otp') {
+        if (TwoFactorAuthentication::getTwoFactorTypeForUser(auth()->user()) == 'otp') {
             // Generate a new code
             $two_factor_code = TwoFactorAuthentication::generateCode();
             // Send it to the user
@@ -32,13 +33,13 @@ class TwoFactorAuthenticationController
 
     public function twoFactorEnterCode()
     {
-        if (auth()->user()->two_factor_type == 'otp') {
+        if (TwoFactorAuthentication::getTwoFactorTypeForUser(auth()->user()) == 'otp') {
             // View that asks for the code received.
             return view('dragonzap_2factor::enter_code');
         }
 
-        if (auth()->user()->two_factor_type == 'totp') {
-            $totps = TwoFactorTotp::forUser(auth()->user())->orderBy('created_at', 'desc')->get();
+        if (TwoFactorAuthentication::getTwoFactorTypeForUser(auth()->user()) == 'totp') {
+            $totps = TwoFactorTotp::forUser(auth()->user())->confirmedOnly()->orderBy('created_at', 'desc')->get();
 
             // View that asks for the code received.
             return view('dragonzap_2factor::enter_totp_code', compact('totps'));

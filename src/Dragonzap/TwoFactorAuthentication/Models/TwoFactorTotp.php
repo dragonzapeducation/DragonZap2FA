@@ -24,6 +24,11 @@ class TwoFactorTotp extends Model
         return $query->where('user_id', $user->id);
     }
 
+    public function scopeConfirmedOnly($query)
+    {
+        return $query->where('confirmed', true);
+    }
+
 
     public function getQrCodeUrl()
     {
