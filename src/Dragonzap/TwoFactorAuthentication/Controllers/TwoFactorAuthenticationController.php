@@ -112,6 +112,11 @@ class TwoFactorAuthenticationController
 
 
         $code = request()->get('code');
+        // If the code has been sent as an array of numbers (e.g. [1, 2, 3, 4]), convert it to a string
+        if (is_array($code)) {
+            $code = implode('', $code);
+        }
+        
         try {
             if (!$totp->verify($code)) {
                 return redirect()->back()->withErrors(['code' => config('dragonzap_2factor.totp.messages.code_invalid')]);

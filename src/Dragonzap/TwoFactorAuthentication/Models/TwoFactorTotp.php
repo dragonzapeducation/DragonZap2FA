@@ -41,6 +41,15 @@ class TwoFactorTotp extends Model
         return $grCodeUri;
     }
 
+    /**
+     * Returns true if the TOTP has been confirmed and valid for use in the account for 
+     * future TOTP authentication.
+     */
+    public function isConfirmed()
+    {
+        return $this->confirmed;
+    }
+
     public function verify($code)
     {
         $totp = TOTP::createFromSecret($this->secret_key);
